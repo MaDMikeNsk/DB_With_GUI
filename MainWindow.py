@@ -35,6 +35,7 @@ class Main(Frame):
             self.labels_list.pop()
 
 
+
 if __name__ == "__main__":
     root = Tk()
     root.geometry('600x800')
