@@ -5,7 +5,6 @@ class Main(Frame):
     def __init__(self, root):
         super().__init__(root)
         self.labels_list = []
-        self.labels = 0
         self.init_main()
 
     def init_main(self):
@@ -27,15 +26,13 @@ class Main(Frame):
 
     def push_user(self):
         temp_label = Label(text='hbgg')
-        temp_label.place(x=300, y=10+18*self.labels)
-        self.labels += 1
+        temp_label.place(x=300, y=10+18*len(self.labels_list))
         self.labels_list.append(temp_label)
 
     def pop_user(self):
-        if self.labels > 0:
+        if len(self.labels_list) > 0:
             self.labels_list[-1].destroy()
             self.labels_list.pop()
-            self.labels -= 1
 
 
 if __name__ == "__main__":
