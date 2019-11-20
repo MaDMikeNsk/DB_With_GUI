@@ -54,7 +54,7 @@ class Main(Frame):
             print(f"pop ok. len = {len(self.labels_list)}")
             # self.view_records()
 
-    def view_records(self, frame, db):
+    def view_records(self, frame):
         i = 0
         for item in self.labels_list:
             temp_label = Label(frame, text=item['Text'])
