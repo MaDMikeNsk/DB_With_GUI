@@ -1,5 +1,4 @@
 from tkinter import *
-
 from DB_Engine import DB_Engine
 
 
@@ -57,10 +56,11 @@ class Main(Frame):
     def view_records(self, frame):
         i = 0
         for item in self.labels_list:
-            temp_label = Label(frame, text=item['Text'])
-        # for instance in self.db.session.query(User).order_by(User.id):
-            temp_label.place(x=300, y=10 + 18 * i)
+            item.place(x=300, y=10 + 18 * i)
             i += 1
+        # for instance in self.db.session.query(User).order_by(User.id):
+        #   lbl = Label() name=instance.first_name + ' ' + instance.last_name
+        #   lbl.place()
 
 
 if __name__ == "__main__":
