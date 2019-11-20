@@ -1,10 +1,13 @@
 from tkinter import *
 
+from DB_Engine import DB_Engine
+
 
 class Main(Frame):
     def __init__(self, root):
         super().__init__(root)
         self.labels_list = []
+        self.db = DB_Engine()
         self.init_main()
 
     def init_main(self):
@@ -24,31 +27,40 @@ class Main(Frame):
 
         # self.name = entry_firstName.get() + entry_lastName.get()
 
-        btn_add = Button(frame, text='Add', padx=117, pady=5, command=self.push_user(frame, entry_firstName,
+        btn_add = Button(frame, text='Add', padx=117, pady=5, command=self.add(frame, entry_firstName,
                                                                                      entry_lastName))
         btn_add.place(x=10, y=75)
 
-        btn_pop = Button(frame, text='Pop', padx=117, pady=5, command=self.pop_user)
+        btn_pop = Button(frame, text='Pop', padx=117, pady=5, command=self.pop)
         btn_pop.place(x=10, y=110)
 
-    def push_user(self, frame, entry_first, entry_last):
+    def add(self, frame, entry_first, entry_last):
         name = entry_first.get() + entry_last.get()
         if name != '':
-            """
-            db = DB_Engine()
-            user = User(entry_first.get(), entry_last.get())
-            db.push_user_to_db(user)
-            """
             temp_label = Label(frame, text=name)
             temp_label.place(x=300, y=10+18*len(self.labels_list))
             self.labels_list.append(temp_label)
             print(f"added ok. len = {len(self.labels_list)}")
+            # self.view_records()
+            """
+            user = User(entry_first.get(), entry_last.get())
+            self.db.push_user_to_db(user)
+            """
 
-    def pop_user(self):
+    def pop(self):
         if len(self.labels_list) > 0:
             self.labels_list[-1].destroy()
             self.labels_list.pop()
             print(f"pop ok. len = {len(self.labels_list)}")
+            # self.view_records()
+
+    def view_records(self, frame, db):
+        i = 0
+        for item in self.labels_list:
+            temp_label = Label(frame, text=item['Text'])
+        # for instance in self.db.session.query(User).order_by(User.id):
+            temp_label.place(x=300, y=10 + 18 * i)
+            i += 1
 
 
 if __name__ == "__main__":
