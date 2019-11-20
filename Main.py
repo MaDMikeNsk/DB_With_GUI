@@ -60,7 +60,7 @@ class Main(Frame):
             i += 1
         # for instance in self.db.session.query(User).order_by(User.id).all():
         #   lbl = Label() name=instance.first_name + ' ' + instance.last_name
-        #   lbl.place()
+        #   lbl.place() nf
 
 
 if __name__ == "__main__":
