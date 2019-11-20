@@ -15,8 +15,6 @@ class Main(Frame):
 
         label_input = Label(frame, text='Please input full name:')
         label_input.place(x=10, y=10)
-        label_warning = Label(frame, text='Warning', fg='red', underline=True)
-        label_warning.place(x=10, y=25)
 
         entry_firstName = Entry(frame)
         entry_firstName.place(x=10, y=50)
@@ -45,6 +43,10 @@ class Main(Frame):
             user = User(entry_first.get(), entry_last.get())
             self.db.push_user_to_db(user)
             """
+        else:
+            label_warning = Label(frame, text='Warning', fg='red', underline=True)
+            label_warning.place(x=10, y=25)
+            warning = True
 
     def pop(self):
         if len(self.labels_list) > 0:
