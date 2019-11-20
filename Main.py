@@ -26,7 +26,7 @@ class Main(Frame):
 
         # self.name = entry_firstName.get() + entry_lastName.get()
 
-        btn_add = Button(frame, text='Add', padx=117, pady=5, command=self.add(frame, entry_firstName,
+        btn_add = Button(frame, text='Add', padx=117, pady=5, command=lambda: self.add(frame, entry_firstName,
                                                                                      entry_lastName))
         btn_add.place(x=10, y=75)
 
@@ -34,8 +34,8 @@ class Main(Frame):
         btn_pop.place(x=10, y=110)
 
     def add(self, frame, entry_first, entry_last):
-        name = entry_first.get() + entry_last.get()
-        if name != '':
+        name = entry_first.get() + ' ' + entry_last.get()
+        if name != ' ':
             temp_label = Label(frame, text=name)
             temp_label.place(x=300, y=10+18*len(self.labels_list))
             self.labels_list.append(temp_label)
@@ -58,7 +58,7 @@ class Main(Frame):
         for item in self.labels_list:
             item.place(x=300, y=10 + 18 * i)
             i += 1
-        # for instance in self.db.session.query(User).order_by(User.id):
+        # for instance in self.db.session.query(User).order_by(User.id).all():
         #   lbl = Label() name=instance.first_name + ' ' + instance.last_name
         #   lbl.place()
 
