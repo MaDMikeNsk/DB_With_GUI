@@ -65,26 +65,22 @@ class Main(tk.Frame):
             if self.warning:
                 self.label_warning.place_forget()
 
-            # Creating user and add him to database 'users.db'
+            # Creating user and record him to database 'users.db'
             user = User(entry_first.get(), entry_last.get())
             self.db.insert_user(user)
+            # Clean entry
             entry_first.delete(0, 'end')
             entry_last.delete(0, 'end')
             self.view_records()
         else:
+            # Place Label <Warning>
             self.label_warning.place(x=10, y=30)
             self.warning = True
 
-        """
-         for item in self.tree.selection():
-            item_text = self.tree.get_children(item)
-            print(type(item_text))
-            print(f'index = {self.tree.index(item)}')
-            print(item_text)
-        """
     def delete_user(self):
-        for selection_item in self.tree.selection():
-            self.db.delete_user(self.tree.item(selection_item)['values'][0])
+        for item in self.tree.selection():
+            user_id = self.tree.item(item)['values'][0]
+            self.db.delete_user(user_id)
         self.view_records()
 
     def view_records(self):
