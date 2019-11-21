@@ -57,9 +57,12 @@ class Main(tk.Frame):
         self.tree.heading("ID", text='ID')
         self.tree.heading("first_name", text='First Name')
         self.tree.heading("last_name", text='Last Name')
-
         self.tree.pack()
 
+    def on_tree_select(self, event):
+        for item in self.tree.selection():
+            item_text = self.tree.item(item, "text")
+            print(item_text)
 
     def add_user(self, entry_first, entry_last):
         name = entry_first.get() + ' ' + entry_last.get()
@@ -78,8 +81,9 @@ class Main(tk.Frame):
             self.warning = True
 
     def delete_user(self):
-        self.tree.selection_remove()
-        self.db.delete_user(self.tree.selection())
+        for selection_item in self.tree.selection():
+            item_text = self.tree.item(selection_item, "text")
+            print(item_text)
         self.view_records()
 
     def view_records(self):
@@ -93,7 +97,7 @@ if __name__ == "__main__":
     db = DB_Engine()
     app = Main(root)
     app.pack()
-    root.title("Домашние финансы")
+    root.title("Таблица пользователей")
     root.geometry("500x500")
     root.resizable(False, False)
     root.mainloop()
