@@ -1,75 +1,99 @@
-from tkinter import *
+import tkinter as tk
+from tkinter import ttk
+from User import User
 from DB_Engine import DB_Engine
 
 
-class Main(Frame):
-    def __init__(self, hidden_root):
-        super().__init__(hidden_root)
-        self.labels_list = []
-        self.db = DB_Engine()
+class Main(tk.Frame):
+    def __init__(self, root):
+        super().__init__(root)
         self.init_main()
         self.warning = False
+        self.db = db
+        self.view_records()
 
     def init_main(self):
+        # Label <First Name:>
+        label_first_name = tk.Label(text='First name:')
+        label_first_name.place(x=10, y=10)
 
-        label_input = Label(text='Please input full name:')
-        label_input.place(x=10, y=10)
+        # Entry <first_name>
+        entry_first_name = tk.Entry()
+        entry_first_name.place(x=75, y=10)
 
-        entry_first_name = Entry()
-        entry_first_name.place(x=10, y=50)
+        # Label <Last Name:>
+        label_last_name = tk.Label(text='Last name:')
+        label_last_name.place(x=210, y=10)
 
-        entry_last_name = Entry()
-        entry_last_name.place(x=150, y=50)
+        # Entry <last_name>
+        entry_last_name = tk.Entry()
+        entry_last_name.place(x=275, y=10)
 
-        # self.name = entry_first_name.get() + entry_last_name.get()
+        # Button <Add User>
+        btn_add_user = tk.Button(text='Add User', command=lambda: self.add_user(entry_first_name, entry_last_name),
+                                 bg='#d7d8e0', padx=40, pady=10)
+        btn_add_user.place(x=10, y=50)
 
-        btn_add = Button(text='Add', padx=117, pady=5, command=lambda: self.add(entry_first_name, entry_last_name))
-        btn_add.place(x=10, y=75)
+        # Button <Delete User>
+        btn_delete_user = tk.Button(text='Delete User', bg='#d7d8e0', command=lambda: self.delete_user(),
+                                    padx=40, pady=10)
+        btn_delete_user.place(x=180, y=50)
 
-        btn_pop = Button(text='Pop', padx=117, pady=5, command=self.pop)
-        btn_pop.place(x=10, y=110)
+        # Label <Warning>
+        self.label_warning = tk.Label(text='Warning! Please input name', fg='red', underline=True)
 
-    def add(self, entry_first, entry_last):
+        # Frame with table of users
+        self.frame = tk.Frame()
+        self.frame.place(x=10, y=110)
+
+        # Table for visualization data
+        self.tree = ttk.Treeview(self.frame, columns=('ID', 'first_name', 'last_name'),
+                                 height=15, show='headings', selectmode='browse')
+        self.tree.pack(side='left')
+        self.tree.column("ID", width=35, anchor=tk.CENTER)
+        self.tree.column("first_name", width=220, anchor=tk.CENTER)
+        self.tree.column("last_name", width=220, anchor=tk.CENTER)
+
+        self.tree.heading("ID", text='ID')
+        self.tree.heading("first_name", text='First Name')
+        self.tree.heading("last_name", text='Last Name')
+
+        self.tree.pack()
+
+
+    def add_user(self, entry_first, entry_last):
         name = entry_first.get() + ' ' + entry_last.get()
         if name != ' ':
             if self.warning:
                 self.label_warning.place_forget()
-            temp_label = Label(text=name)
-            temp_label.place(x=300, y=10+18*len(self.labels_list))
-            self.labels_list.append(temp_label)
+
+            # Creating user and add him to database 'users.db'
+            user = User(entry_first.get(), entry_last.get())
+            self.db.insert_user(user)
             entry_first.delete(0, 'end')
             entry_last.delete(0, 'end')
-            print(f"added ok. len = {len(self.labels_list)}")
-            # self.view_records()
-            """
-            user = User(entry_first.get(), entry_last.get())
-            self.db.push_user_to_db(user)
-            """
+            self.view_records()
         else:
-            self.label_warning = Label(text='Please input name', fg='red', underline=True)
-            self.label_warning.place(x=10, y=25)
+            self.label_warning.place(x=10, y=30)
             self.warning = True
 
-    def pop(self):
-        if len(self.labels_list) > 0:
-            self.labels_list[-1].destroy()
-            self.labels_list.pop()
-            print(f"pop ok. len = {len(self.labels_list)}")
-            # self.view_records()
+    def delete_user(self):
+        self.tree.selection_remove()
+        self.db.delete_user(self.tree.selection())
+        self.view_records()
 
     def view_records(self):
-        i = 0
-        for item in self.labels_list:
-            item.place(x=300, y=10 + 18 * i)
-            i += 1
-        # for instance in self.db.session.query(User).order_by(User.id).all():
-        #   lbl = Label() name=instance.first_name + ' ' + instance.last_name
-        #   lbl.place() nf
+        [self.tree.delete(i) for i in self.tree.get_children()]
+        [self.tree.insert('', 'end', values=(user.id, user.first_name, user.last_name))
+         for user in self.db.session.query(User).filter().all()]
 
 
 if __name__ == "__main__":
-    root = Tk()
-    root.geometry('600x700')
+    root = tk.Tk()
+    db = DB_Engine()
     app = Main(root)
-    app.place()
+    app.pack()
+    root.title("Домашние финансы")
+    root.geometry("500x500")
+    root.resizable(False, False)
     root.mainloop()

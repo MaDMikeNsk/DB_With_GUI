@@ -9,6 +9,10 @@ class DB_Engine:
         session = sessionmaker(bind=self.engine)
         self.session = session()
 
-    def push_user_to_db(self, user: User):
+    def insert_user(self, user: User):
         self.session.add(user)
+        self.session.commit()
+
+    def delete_user(self, user_id):
+        self.session.query(User).filter(User.id == user_id).delete()
         self.session.commit()
