@@ -35,7 +35,7 @@ class Main(tk.Frame):
         btn_add_user.place(x=10, y=50)
 
         # Button <Delete User>
-        btn_delete_user = tk.Button(text='Delete User', bg='#d7d8e0', command=lambda: self.delete_user(),
+        btn_delete_user = tk.Button(text='Delete User', bg='#d7d8e0', command=self.delete_user,
                                     padx=40, pady=10)
         btn_delete_user.place(x=180, y=50)
 
@@ -59,11 +59,6 @@ class Main(tk.Frame):
         self.tree.heading("last_name", text='Last Name')
         self.tree.pack()
 
-    def on_tree_select(self, event):
-        for item in self.tree.selection():
-            item_text = self.tree.item(item, "text")
-            print(item_text)
-
     def add_user(self, entry_first, entry_last):
         name = entry_first.get() + ' ' + entry_last.get()
         if name != ' ':
@@ -80,10 +75,16 @@ class Main(tk.Frame):
             self.label_warning.place(x=10, y=30)
             self.warning = True
 
+        """
+         for item in self.tree.selection():
+            item_text = self.tree.get_children(item)
+            print(type(item_text))
+            print(f'index = {self.tree.index(item)}')
+            print(item_text)
+        """
     def delete_user(self):
         for selection_item in self.tree.selection():
-            item_text = self.tree.item(selection_item, "text")
-            print(item_text)
+            self.db.delete_user(self.tree.item(selection_item)['values'][0])
         self.view_records()
 
     def view_records(self):
