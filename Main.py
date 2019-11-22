@@ -48,7 +48,7 @@ class Main(tk.Frame):
         self.frame = tk.Frame()
         self.frame.place(x=10, y=130)
 
-        # Table for visualization data
+        # Treeview <ttk.Treeview> for visualization data
         self.tree = ttk.Treeview(self.frame, columns=('ID', 'first_name', 'last_name'),
                                  height=15, show='headings', selectmode='extended')
         self.tree.column("ID", width=35, anchor=tk.CENTER)
@@ -60,23 +60,25 @@ class Main(tk.Frame):
         self.tree.heading("last_name", text='Last Name')
         self.tree.pack(side='left')
 
-        # Scrollbar <Scrollbar>
+        # Scrollbar <ttk.Scrollbar>
         vsb = ttk.Scrollbar(self.frame, orient="vertical", command=self.tree.yview)
         vsb.pack(side='right', fill='y')
         self.tree.configure(yscrollcommand=vsb.set)
 
     def add_user(self, entry_first, entry_last):
-        name = entry_first.get() + ' ' + entry_last.get()
-        if name != ' ':
+        name = entry_first.get() + entry_last.get()
+        if name:
             if self.warning:
                 self.label_warning.place_forget()
 
-            # Creating user and record him to database 'users.db'
+            # Creating user and insert him to database 'users.db'
             user = User(entry_first.get(), entry_last.get())
             self.db.insert_user(user)
+
             # Clean entry
             entry_first.delete(0, 'end')
             entry_last.delete(0, 'end')
+
             self.view_records()
         else:
             # Place Label <Warning>
@@ -84,6 +86,7 @@ class Main(tk.Frame):
             self.warning = True
 
     def delete_user(self):
+        # Getting id's of selected users and delete them
         for item in self.tree.selection():
             user_id = self.tree.item(item)['values'][0]
             self.db.delete_user(user_id)
