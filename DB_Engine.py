@@ -17,7 +17,7 @@ class DB_Engine:
         self.session.commit()
 
     def delete_user(self, user_id):
-        for item in self.session.query(User).filter(User.id == user_id).all():
-            self.session.delete(item)
+        for user in self.session.query(User).filter(User.id == user_id).all():
+            self.session.delete(user)
             self.session.commit()
 
