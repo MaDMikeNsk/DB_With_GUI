@@ -33,13 +33,13 @@ class Main(tk.Frame):
         self.add_img = tk.PhotoImage(file='img/plus.png')
         btn_add_user = tk.Button(command=lambda: self.add_user(entry_first_name, entry_last_name),
                                   image=self.add_img, padx=40, pady=10, bd=0)
-        btn_add_user.place(x=90, y=50)
+        btn_add_user.place(x=90, y=55)
 
         # Button <Delete User>
         self.delete_img = tk.PhotoImage(file='img/minus.png')
         btn_delete_user = tk.Button(text='Delete User', command=self.delete_user,
                                     padx=40, pady=10, image=self.delete_img, bd=0)
-        btn_delete_user.place(x=250, y=50)
+        btn_delete_user.place(x=250, y=55)
 
         # Label <Warning>
         self.label_warning = tk.Label(text='Warning! Please input name', fg='red', underline=True)
@@ -50,8 +50,7 @@ class Main(tk.Frame):
 
         # Table for visualization data
         self.tree = ttk.Treeview(self.frame, columns=('ID', 'first_name', 'last_name'),
-                                 height=15, show='headings', selectmode='browse')
-        self.tree.pack(side='left')
+                                 height=15, show='headings', selectmode='extended')
         self.tree.column("ID", width=35, anchor=tk.CENTER)
         self.tree.column("first_name", width=180, anchor=tk.CENTER)
         self.tree.column("last_name", width=180, anchor=tk.CENTER)
@@ -59,7 +58,12 @@ class Main(tk.Frame):
         self.tree.heading("ID", text='ID')
         self.tree.heading("first_name", text='First Name')
         self.tree.heading("last_name", text='Last Name')
-        self.tree.pack()
+        self.tree.pack(side='left')
+
+        # Scrollbar <Scrollbar>
+        vsb = ttk.Scrollbar(self.frame, orient="vertical", command=self.tree.yview)
+        vsb.pack(side='right', fill='y')
+        self.tree.configure(yscrollcommand=vsb.set)
 
     def add_user(self, entry_first, entry_last):
         name = entry_first.get() + ' ' + entry_last.get()
@@ -97,6 +101,6 @@ if __name__ == "__main__":
     app = Main(root)
     app.pack()
     root.title("Таблица пользователей")
-    root.geometry("420x470")
+    root.geometry("425x470")
     root.resizable(False, False)
     root.mainloop()
