@@ -33,13 +33,13 @@ class Main(tk.Frame):
         self.add_img = tk.PhotoImage(file='img/plus.png')
         btn_add_user = tk.Button(command=lambda: self.add_user(entry_first_name, entry_last_name),
                                   image=self.add_img, padx=40, pady=10, bd=0)
-        btn_add_user.place(x=90, y=55)
+        btn_add_user.place(x=100, y=55)
 
         # Button <Delete User>
         self.delete_img = tk.PhotoImage(file='img/minus.png')
         btn_delete_user = tk.Button(text='Delete User', command=self.delete_user,
                                     padx=40, pady=10, image=self.delete_img, bd=0)
-        btn_delete_user.place(x=250, y=55)
+        btn_delete_user.place(x=260, y=55)
 
         # Label <Warning>
         self.label_warning = tk.Label(text='Warning! Please input name', fg='red', underline=True)
