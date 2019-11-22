@@ -1,12 +1,9 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from User import User
-from sqlalchemy.ext.declarative import declarative_base
-
-Base = declarative_base()
 
 
-class DB_Engine:
+class DatabaseEngine:
     def __init__(self):
         self.engine = create_engine('sqlite:///DataBase/users.db', echo=True)
         session = sessionmaker(bind=self.engine)
@@ -20,4 +17,3 @@ class DB_Engine:
         for user in self.session.query(User).filter(User.id == user_id).all():
             self.session.delete(user)
             self.session.commit()
-

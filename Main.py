@@ -1,14 +1,13 @@
 import tkinter as tk
 from tkinter import ttk
 from User import User
-from DB_Engine import DB_Engine
+from DB_Engine import DatabaseEngine
 
 
 class Main(tk.Frame):
-    def __init__(self, root):
-        super().__init__(root)
+    def __init__(self, _root):
+        super().__init__(_root)
         self.init_main()
-        self.warning = False
         self.db = db
         self.view_records()
 
@@ -32,7 +31,7 @@ class Main(tk.Frame):
         # Button <Add User>
         self.add_img = tk.PhotoImage(file='img/plus.png')
         btn_add_user = tk.Button(command=lambda: self.add_user(entry_first_name, entry_last_name),
-                                  image=self.add_img, padx=40, pady=10, bd=0)
+                                 image=self.add_img, padx=40, pady=10, bd=0)
         btn_add_user.place(x=100, y=55)
 
         # Button <Delete User>
@@ -43,6 +42,7 @@ class Main(tk.Frame):
 
         # Label <Warning>
         self.label_warning = tk.Label(text='Warning! Please input name', fg='red', underline=True)
+        self.warning = False
 
         # Frame with table of users
         self.frame = tk.Frame()
@@ -100,7 +100,7 @@ class Main(tk.Frame):
 
 if __name__ == "__main__":
     root = tk.Tk()
-    db = DB_Engine()
+    db = DatabaseEngine()
     app = Main(root)
     app.pack()
     root.title("Таблица пользователей")
