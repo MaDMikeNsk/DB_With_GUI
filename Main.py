@@ -30,29 +30,31 @@ class Main(tk.Frame):
         entry_last_name.place(x=275, y=10)
 
         # Button <Add User>
-        btn_add_user = tk.Button(text='Add User', command=lambda: self.add_user(entry_first_name, entry_last_name),
-                                 bg='#d7d8e0', padx=40, pady=10)
-        btn_add_user.place(x=10, y=50)
+        self.add_img = tk.PhotoImage(file='img/plus.png')
+        btn_add_user = tk.Button(command=lambda: self.add_user(entry_first_name, entry_last_name),
+                                  image=self.add_img, padx=40, pady=10, bd=0)
+        btn_add_user.place(x=90, y=50)
 
         # Button <Delete User>
-        btn_delete_user = tk.Button(text='Delete User', bg='#d7d8e0', command=self.delete_user,
-                                    padx=40, pady=10)
-        btn_delete_user.place(x=180, y=50)
+        self.delete_img = tk.PhotoImage(file='img/minus.png')
+        btn_delete_user = tk.Button(text='Delete User', command=self.delete_user,
+                                    padx=40, pady=10, image=self.delete_img, bd=0)
+        btn_delete_user.place(x=250, y=50)
 
         # Label <Warning>
         self.label_warning = tk.Label(text='Warning! Please input name', fg='red', underline=True)
 
         # Frame with table of users
         self.frame = tk.Frame()
-        self.frame.place(x=10, y=110)
+        self.frame.place(x=10, y=130)
 
         # Table for visualization data
         self.tree = ttk.Treeview(self.frame, columns=('ID', 'first_name', 'last_name'),
                                  height=15, show='headings', selectmode='browse')
         self.tree.pack(side='left')
         self.tree.column("ID", width=35, anchor=tk.CENTER)
-        self.tree.column("first_name", width=220, anchor=tk.CENTER)
-        self.tree.column("last_name", width=220, anchor=tk.CENTER)
+        self.tree.column("first_name", width=180, anchor=tk.CENTER)
+        self.tree.column("last_name", width=180, anchor=tk.CENTER)
 
         self.tree.heading("ID", text='ID')
         self.tree.heading("first_name", text='First Name')
@@ -95,6 +97,6 @@ if __name__ == "__main__":
     app = Main(root)
     app.pack()
     root.title("Таблица пользователей")
-    root.geometry("500x500")
+    root.geometry("420x470")
     root.resizable(False, False)
     root.mainloop()
